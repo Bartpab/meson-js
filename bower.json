@@ -1,0 +1,19 @@
+{
+  "name": "meson-js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/Bartpab/meson-js",
+  "authors": [
+    "G. Pabois"
+  ],
+  "description": "",
+  "main": "lib/index.js",
+  "keywords": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
