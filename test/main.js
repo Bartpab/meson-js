@@ -1,5 +1,6 @@
 var meson = require('../lib/index')
 var co = require('co')
+var sleep = require('../lib/utils/sleep')
 
 var chai = require("chai");
 var chaiAsPromised = require("chai-as-promised");
@@ -11,6 +12,7 @@ describe('#frontendApplication', function () {
     this.timeout(150000)
     it('should spawn a backend process and connect to it', function () {
         var app = new meson.LocalFrontendApplication()
+
         var done
         var cancel
 
@@ -26,12 +28,19 @@ describe('#frontendApplication', function () {
             var executionPromise = co.wrap(function* (app) {
                 console.log('Run RPCs')
                 var add2 = app.rpc_stub('add2')
-                var sum = yield add2(2, 1)
-                console.log(sum)
-                assert.strictEqual(sum, 4, 'RPC returned value is not the expected one')
+                sum = yield add2(2, 1)
+                assert.strictEqual(sum, 3, 'RPC returned value is not the expected one')
+
+                var hello = app.rpc_stub('hello')
+                yield hello()
+
+                console.log('Publish topic on domain')
+                app.publish('topic', 'domain')
                 app.exit()
                 done()
-            })(app)
+            })(app).catch((error) => {
+                cancel(error)
+            })
         }).catch((error) => {
             cancel(error)
         })

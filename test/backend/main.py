@@ -29,19 +29,16 @@ file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-# cr�ation d'un second handler qui va rediriger chaque �criture de log
-# sur la console
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.DEBUG)
-stream_handler.setFormatter(formatter)
-logger.addHandler(stream_handler)
-
 def on_crash(type, value, tb):
     logger.error('%s: %s - %s', type, value, tb)
     sys.__excepthook__(type, value, tb)
 
 if __name__ == '__main__':
     app = BackendApplication()
-    app.kernel.rpc.register('hello', lambda: print('hello world'))
-    app.kernel.rpc.register('add2', lambda x, y: x + y)
+
+    rpcService = app.getService('com.rpc')
+
+    rpcService.register('hello', lambda __session__: print('hello world from {}'.format(__session__.id)))
+    rpcService.register('add2', lambda x, y: x + y)
+
     app.run()
