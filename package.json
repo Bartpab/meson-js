@@ -39,9 +39,11 @@
     "standard": "^5.0.0"
   },
   "dependencies": {
+    "aes-js": "^3.1.0",
     "babel-plugin-transform-regenerator": "^6.24.1",
     "babel-plugin-transform-runtime": "^6.23.0",
     "co": "^4.6.0",
+    "crypto-js": "^3.1.9-1",
     "process": "^0.11.9",
     "uuid": "^3.0.1",
     "websocket": "^1.0.24"
