@@ -6,19 +6,55 @@
 [![Test coverage][coveralls-image]][coveralls-url]
 
 > 
-
+## Purpose
+	Meson JS is a library to execute remote python logic through RPC calls
 ## Installation
 
 ```sh
 npm install meson-js --save
+To use with python package meson-py
 ```
 
 ## Usage
 
 ```js
-var mesonJs = require('meson-js')
+var Meson = require('meson-js')
+var backendApplication = new Meson.LocalFrontendApplication('[APP UID]', 'server_password', 'client_password')
 
-mesonJs() //=> "Hello World!"
+async lifecycle (backendApplication){
+	await backendApplication.start('/path/to/backend/dir', 'backend-entry.py', port, true)
+	await backendApplication.run()
+	await backendApplication.waitUntilExiting()
+} 
+
+async executeLogic (backendApplication, callback, fallback) {
+	try {
+		yield backendApplication.waitUntilStarted()
+	} catch (error) {
+		if(!!fallback) {
+			fallback(error)
+		}
+		return
+	}
+	callback(backendApplication)
+}
+
+
+lifecycle(backendApplication).then(() => {
+	clean()
+	app.quit()
+}).catch((error) => {
+	log(error)
+	clean_after_error()
+	app.quit()
+})
+
+executeLogic(backendApplication, function (backendApplication) {
+	let result = await backendApplication.rpc_stub('com.backend.rpc.add')(1, 2)
+	print(result)
+})
+
+
 ```
 
 ## License
