@@ -50,11 +50,13 @@ lifecycle(backendApplication).then(() => {
 })
 
 executeLogic(backendApplication, function (backendApplication) {
-	let result = await backendApplication.rpc_stub('com.backend.rpc.add')(1, 2)
+	let result = await backendApplication.rpc_stub('com.backend.rpc.controllers.Foo.Bar')()
 	print(result)
 })
 
-
+```
+```
+>> Hello world!
 ```
 
 ## License
