@@ -34,11 +34,15 @@ def on_crash(type, value, tb):
     sys.__excepthook__(type, value, tb)
 
 if __name__ == '__main__':
-    app = BackendApplication()
+    app = BackendApplication(
+        id="org.meson.test", 
+        server_secret="test_server", 
+        client_secret="test_client"
+    )
 
-    rpcService = app.getService('com.rpc')
+    rpcService = app.getContext().getSharedService('com.rpc')
 
     rpcService.register('hello', lambda __session__: print('hello world from {}'.format(__session__.id)))
     rpcService.register('add2', lambda x, y: x + y)
 
-    app.run()
+    app.init()
